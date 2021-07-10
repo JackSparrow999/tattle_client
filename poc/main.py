@@ -1,7 +1,11 @@
-from poc.redis_client import redis_util
-
+from poc.redis_client import redis_obj
+import poc.publisher as pub
+import poc.subscriber as sub
+import time
 
 if __name__ == "__main__":
     print("Starting poc /-")
-    redis_util.set('ronaq', 'raja')
-    print(redis_util.get('ronaq'))
+
+    while True:
+        pub.publish()
+        time.sleep(1)
