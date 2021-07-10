@@ -1,2 +1,3 @@
 .idea*
-poc/__pycache__*
+
+poc/__pycache__/*
