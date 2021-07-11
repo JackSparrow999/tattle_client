@@ -3,6 +3,7 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.textinput import TextInput
 from poc.redis_client import redis_obj
 from kivy.uix.button import Button
+from kivy.uix.label import Label
 
 class MainApp(App):
 
@@ -24,7 +25,8 @@ class MainApp(App):
         chat_view = TextInput(text='', multiline=True, readonly=True,
                         size_hint=(.65, .75),
                         background_color=(1, 1, .8, 1),
-                        pos_hint={'x': .05, 'y': .2})
+                        pos_hint={'x': .05, 'y': .2},
+                        cursor_color=(1, 1, .8, 1))
         self.latest_chats = chat_view
 
         #online info of users
