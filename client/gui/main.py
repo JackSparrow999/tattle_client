@@ -2,6 +2,7 @@ from kivy.app import App
 from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.textinput import TextInput
+from poc.redis_client import redis_obj
 
 class MainApp(App):
 
@@ -51,7 +52,22 @@ class MainApp(App):
                                          + value.text
         value.text = ''
 
+app = MainApp()
+
+def message_handler(message):
+    if message == None:
+        return None
+    if app.latest_chats.text == '':
+        app.latest_chats.text = message["data"]
+    else:
+        app.latest_chats.text = app.latest_chats.text \
+                                + '\n' \
+                                + message["data"]
+
 
 if __name__ == '__main__':
-    app = MainApp()
+
+    pub = redis_obj.pubsub()
+    pub.subscribe(**{'hello_world': message_handler})
+    pub.run_in_thread(sleep_time=1)
     app.run()
