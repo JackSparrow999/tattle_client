@@ -50,40 +50,31 @@ class MainApp(App):
 
 
     def on_enter_in_chat(instance, value):
-        if instance.latest_chats.text == '':
-            instance.latest_chats.text = value.text
-        else:
-            instance.latest_chats.text = instance.latest_chats.text \
-                                         + '\n' \
-                                         + value.text
+        publish(value.text)
         value.text = ''
 
     def send_button_callback(self, event):
-        if self.latest_chats.text == '':
-            self.latest_chats.text = self.chat_box.text
-        else:
-            self.latest_chats.text = self.latest_chats.text \
-                                         + '\n' \
-                                         + self.chat_box.text
+        publish(self.chat_box.text)
         self.chat_box.text = ''
 
 
 app = MainApp()
 
+def publish(chat):
+    redis_obj.publish('chat_channel', chat)
+
 def message_handler(message):
-    if message == None:
-        return None
     if app.latest_chats.text == '':
         app.latest_chats.text = message["data"]
     else:
         app.latest_chats.text = app.latest_chats.text \
-                                + '\n' \
-                                + message["data"]
+                                 + '\n' \
+                                 + message["data"]
 
 
 if __name__ == '__main__':
 
     pub = redis_obj.pubsub()
-    pub.subscribe(**{'hello_world': message_handler})
+    pub.subscribe(**{'chat_channel': message_handler})
     pub.run_in_thread(sleep_time=1)
     app.run()
