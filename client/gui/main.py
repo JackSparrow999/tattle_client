@@ -4,6 +4,9 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.textinput import TextInput
 
 class MainApp(App):
+
+    latest_chats = None
+
     def build(self):
 
         super_box = BoxLayout(orientation = 'vertical')
@@ -13,9 +16,8 @@ class MainApp(App):
 
         chats = BoxLayout(orientation='horizontal')
         online_status = BoxLayout(orientation='horizontal')
-        chat_label = Label(text='Chat is here',
-                           size_hint=(.5, .5),
-                           pos_hint={'center_x': .5, 'center_y': .5})
+        chat_label = TextInput(text='', multiline=True, readonly=True)
+        self.latest_chats = chat_label
         online_label = Label(text='online is here',
                              size_hint=(.5, .5),
                              pos_hint={'center_x': .5, 'center_y': .5})
@@ -41,7 +43,12 @@ class MainApp(App):
 
 
     def on_enter_in_chat(instance, value):
-        print('Text: ', value.text)
+        if instance.latest_chats.text == '':
+            instance.latest_chats.text = value.text
+        else:
+            instance.latest_chats.text = instance.latest_chats.text \
+                                         + '\n' \
+                                         + value.text
         value.text = ''
 
 
