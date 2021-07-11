@@ -1,6 +1,5 @@
 from kivy.app import App
-from kivy.uix.label import Label
-from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.textinput import TextInput
 from poc.redis_client import redis_obj
 from kivy.uix.button import Button
@@ -12,42 +11,42 @@ class MainApp(App):
 
     def build(self):
 
-        super_box = BoxLayout(orientation = 'vertical')
+        global_window = FloatLayout()
 
         #send button
-        send_btn = Button(text="Send")
+        send_btn = Button(text="Send",
+                        size_hint=(.2, .1),
+                        background_color=(0.298, .6, 0, 1),
+                        pos_hint={'x': .75, 'y': .05})
         send_btn.bind(on_press = self.send_button_callback)
 
-        #info box
-        info_box = BoxLayout(orientation='horizontal')
-
-        chats = BoxLayout(orientation='horizontal')
-        online_status = BoxLayout(orientation='horizontal')
-        chat_view = TextInput(text='', multiline=True, readonly=True)
+        #global chat view
+        chat_view = TextInput(text='', multiline=True, readonly=True,
+                        size_hint=(.65, .75),
+                        background_color=(1, 1, .8, 1),
+                        pos_hint={'x': .05, 'y': .2})
         self.latest_chats = chat_view
+
+        #online info of users
         online_info = TextInput(text='online is here',
-                             size_hint=(.5, .5),
-                             pos_hint={'center_x': .5, 'center_y': .5})
-        chats.add_widget(chat_view)
-        online_status.add_widget(online_info)
-        info_box.add_widget(chats)
-        info_box.add_widget(online_status)
-        super_box.add_widget(info_box)
+                        size_hint=(.2, .75),
+                        background_color=(.8, .8, 1, 1),
+                        pos_hint={'x': .75, 'y': .2})
 
-
-        #text box
-        type_box = BoxLayout(orientation='horizontal')
-        chat_input = TextInput(text='', multiline=False, text_validate_unfocus=False)
+        #chat input window
+        chat_input = TextInput(text='', multiline=False, text_validate_unfocus=False,
+                        size_hint=(.65, .1),
+                        background_color=(0.753, 0.753, 0.753, 1),
+                        pos_hint={'x': .05, 'y': .05})
         chat_input.bind(on_text_validate=self.on_enter_in_chat)
         self.chat_box = chat_input
-        # type_label = Label(text='Type something: ',
-        #                    size_hint=(.5, .5),
-        #                    pos_hint={'center_x': .5, 'center_y': .5})
-        type_box.add_widget(chat_input)
-        type_box.add_widget(send_btn)
-        super_box.add_widget(type_box)
 
-        return super_box
+        global_window.add_widget(send_btn)
+        global_window.add_widget(chat_view)
+        global_window.add_widget(chat_input)
+        global_window.add_widget(online_info)
+
+        return global_window
 
 
     def on_enter_in_chat(instance, value):
