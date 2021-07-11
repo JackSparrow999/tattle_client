@@ -3,14 +3,20 @@ from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.textinput import TextInput
 from poc.redis_client import redis_obj
+from kivy.uix.button import Button
 
 class MainApp(App):
 
     latest_chats = None
+    chat_box = None
 
     def build(self):
 
         super_box = BoxLayout(orientation = 'vertical')
+
+        #send button
+        send_btn = Button(text="Send")
+        send_btn.bind(on_press = self.send_button_callback)
 
         #info box
         info_box = BoxLayout(orientation='horizontal')
@@ -33,11 +39,12 @@ class MainApp(App):
         type_box = BoxLayout(orientation='horizontal')
         text_input = TextInput(text='', multiline=False, text_validate_unfocus=False)
         text_input.bind(on_text_validate=self.on_enter_in_chat)
-        type_label = Label(text='Type something: ',
-                           size_hint=(.5, .5),
-                           pos_hint={'center_x': .5, 'center_y': .5})
+        self.chat_box = text_input
+        # type_label = Label(text='Type something: ',
+        #                    size_hint=(.5, .5),
+        #                    pos_hint={'center_x': .5, 'center_y': .5})
         type_box.add_widget(text_input)
-        type_box.add_widget(type_label)
+        type_box.add_widget(send_btn)
         super_box.add_widget(type_box)
 
         return super_box
@@ -51,6 +58,16 @@ class MainApp(App):
                                          + '\n' \
                                          + value.text
         value.text = ''
+
+    def send_button_callback(self, event):
+        if self.latest_chats.text == '':
+            self.latest_chats.text = self.chat_box.text
+        else:
+            self.latest_chats.text = self.latest_chats.text \
+                                         + '\n' \
+                                         + self.chat_box.text
+        self.chat_box.text = ''
+
 
 app = MainApp()
 
