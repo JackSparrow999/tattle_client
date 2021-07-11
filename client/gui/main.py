@@ -29,24 +29,40 @@ class MainApp(App):
                         cursor_color=(1, 1, .8, 1))
         self.latest_chats = chat_view
 
-        #online info of users
-        online_info = TextInput(text='online is here',
-                        size_hint=(.2, .75),
-                        background_color=(.8, .8, 1, 1),
-                        pos_hint={'x': .75, 'y': .2})
-
         #chat input window
-        chat_input = TextInput(text='', multiline=False, text_validate_unfocus=False,
+        chat_input = TextInput(text='Enter message', multiline=False, text_validate_unfocus=False,
                         size_hint=(.65, .1),
                         background_color=(0.753, 0.753, 0.753, 1),
                         pos_hint={'x': .05, 'y': .05})
         chat_input.bind(on_text_validate=self.on_enter_in_chat)
         self.chat_box = chat_input
 
+        # cmd window
+        cmd_list = TextInput(text='All commands', multiline=True, readonly=True,
+                                size_hint=(.2, .35),
+                                background_color=(.8, .8, 1, 1),
+                                pos_hint={'x': .75, 'y': .6},
+                                cursor_color=(.8, .8, 1, 1))
+
+        #cmd window
+        cmd_window = TextInput(text='Enter command', multiline=False,
+                                size_hint=(.2, .2),
+                                background_color=(1, 1, 1, 1),
+                                pos_hint={'x': .75, 'y': .35})
+
+        # send button
+        execute_btn = Button(text="Execute",
+                          size_hint=(.2, .1),
+                          background_color=(0.4, .7, 1, 1),
+                          pos_hint={'x': .75, 'y': .2})
+        execute_btn.bind(on_press=self.execute_button_callback)
+
         global_window.add_widget(send_btn)
         global_window.add_widget(chat_view)
         global_window.add_widget(chat_input)
-        global_window.add_widget(online_info)
+        global_window.add_widget(cmd_window)
+        global_window.add_widget(cmd_list)
+        global_window.add_widget(execute_btn)
 
         return global_window
 
@@ -58,6 +74,9 @@ class MainApp(App):
     def send_button_callback(self, event):
         publish(self.chat_box.text)
         self.chat_box.text = ''
+
+    def execute_button_callback(self, event):
+        print('execute')
 
 
 app = MainApp()
