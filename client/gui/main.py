@@ -37,15 +37,8 @@ class MainApp(App):
         type_box.add_widget(type_label)
         super_box.add_widget(type_box)
 
-
-
-
-
-
-
-
-
         return super_box
+
 
     def on_enter_in_chat(instance, value):
         print('Text: ', value.text)
