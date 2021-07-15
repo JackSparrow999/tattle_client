@@ -104,7 +104,7 @@ class RemoveUserFromRoom(Command):
     def execute(self):
         pass
 
-    
+
 class LoginUser(Command):
 
     def execute(self):
@@ -118,6 +118,12 @@ def route_command(c):
         'create_user': CreateUser(),
         'create_room': CreateRoom,
     }
+
+    lst = c.split(' ')
+    cmd = commands_dict[lst[0]]
+    cmd.init(c)
+
+    return cmd.execute()
 
 
 
