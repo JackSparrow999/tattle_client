@@ -1,8 +1,10 @@
+import requests
 
 class Command:
 
     cmd = None
     args = []
+    host = 'http://127.0.0.1:8060'
 
     def init(self, s):
         lst = s.split()
@@ -10,8 +12,11 @@ class Command:
         for i in range(1, len(lst)):
             self.args.append(lst[i])
 
+    def build_url(self, s):
+        return self.host + s
+
     def execute(self):
-        print('parent')
+        pass
 
     def xyz(self):
         pass
@@ -19,8 +24,14 @@ class Command:
 
 class CreateUser(Command):
 
+    path = '/auth/user/'
+
+    #cmd: create_user <user_name> <password>
     def execute(self):
-        pass
+        response = requests.post(self.build_url(self.path),
+                      data={'user_name': self.args[0],
+                            'password': self.args[1]})
+        return 'Created user ' + response.json()['user_name']
 
 
 class FetchUser(Command):
@@ -89,6 +100,12 @@ class AllRoomsForUser(Command):
 
 
 class RemoveUserFromRoom(Command):
+
+    def execute(self):
+        pass
+
+    
+class LoginUser(Command):
 
     def execute(self):
         pass
