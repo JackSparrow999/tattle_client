@@ -129,6 +129,4 @@ def route_command(c):
 
 
 if __name__ == '__main__':
-    cu = Command()
-    cu.init('hello world')
-    cu.execute()
+    route_command('create_user ronaq password')
