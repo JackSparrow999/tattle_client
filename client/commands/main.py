@@ -60,8 +60,20 @@ class FetchUser(Command):
 
 class DeleteUser(Command):
 
+    path = '/auth/user/'
+
+    #del_user user_id
     def execute(self):
-        pass
+
+        if len(self.args) >= 1:
+            user_id = self.args[0]
+        else:
+            user_id = None
+
+        response = requests.delete(self.build_url(self.path), data={
+            'user_id': user_id
+        })
+        return response.json()['message']
 
 
 class UpdateUser(Command):
@@ -135,7 +147,7 @@ def route_command(c):
     commands_dict = {
         'create_user': CreateUser(),
         'get_user': FetchUser(),
-        'create_room': CreateRoom,
+        'del_user': DeleteUser(),
     }
 
     lst = c.split(' ')
@@ -149,4 +161,5 @@ def route_command(c):
 
 if __name__ == '__main__':
     # route_command('create_user ronaq password')
-    print(route_command('get_user raja'))
+    # print(route_command('get_user raja'))
+    print(route_command('del_user 11'))
