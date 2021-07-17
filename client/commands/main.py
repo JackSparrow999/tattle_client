@@ -36,8 +36,26 @@ class CreateUser(Command):
 
 class FetchUser(Command):
 
+    path = '/auth/user/'
+
+    #cmd: get_user <user_name>
     def execute(self):
-        pass
+        if len(self.args) >= 1:
+            user_name = self.args[0]
+        else:
+            user_name = None
+        if user_name == None:
+            response = requests.get(self.build_url(self.path))
+        else:
+            response = requests.get(self.build_url(self.path), params={
+                'user_name': user_name
+            })
+        lst = response.json()['users']
+        res = ''
+        for x in lst:
+            res = res + str(x)
+            res = res + '\n'
+        return res
 
 
 class DeleteUser(Command):
@@ -116,6 +134,7 @@ def route_command(c):
 
     commands_dict = {
         'create_user': CreateUser(),
+        'get_user': FetchUser(),
         'create_room': CreateRoom,
     }
 
@@ -129,4 +148,5 @@ def route_command(c):
 
 
 if __name__ == '__main__':
-    route_command('create_user ronaq password')
+    # route_command('create_user ronaq password')
+    print(route_command('get_user raja'))
