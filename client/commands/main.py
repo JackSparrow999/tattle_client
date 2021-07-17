@@ -135,8 +135,21 @@ class FetchRoom(Command):
 
 
 class DeleteRoom(Command):
+
+    path = '/auth/room/'
+
+    # del_room room_id
     def execute(self):
-        pass
+
+        if len(self.args) >= 1:
+            room_id = self.args[0]
+        else:
+            room_id = None
+
+        response = requests.delete(self.build_url(self.path), data={
+            'room_id': room_id
+        })
+        return response.json()['message']
 
 
 class UpdateRoom(Command):
@@ -188,6 +201,7 @@ def route_command(c):
         'update_user': UpdateUser(),
         'create_room': CreateRoom(),
         'get_room': FetchRoom(),
+        'del_room': DeleteRoom(),
     }
 
     lst = c.split(' ')
@@ -207,5 +221,6 @@ if __name__ == '__main__':
 
     # print(route_command('create_room birthday true'))
     # print(route_command('get_room birthday'))
-    
+    # print(route_command('del_room 6'))
+
     pass
