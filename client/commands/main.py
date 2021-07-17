@@ -233,8 +233,19 @@ class RemoveUserFromRoom(Command):
 
 class LoginUser(Command):
 
+    path = '/auth/login/'
+
+    #cmd: login user_id password
     def execute(self):
-        pass
+        user_id = self.args[0]
+        password = self.args[1]
+
+        response = requests.post(self.build_url(self.path), data={
+            'user_id': user_id,
+            'password': password,
+        })
+
+        return response.json()['logged_in'] == 'true'
 
 
 
@@ -253,6 +264,7 @@ def route_command(c):
         'member_rooms': AllRoomsForUser(),
         'add_user': AddUserToRoom(),
         'del_user_from_room': RemoveUserFromRoom(),
+        'login': LoginUser(),
     }
 
     lst = c.split(' ')
@@ -278,6 +290,6 @@ if __name__ == '__main__':
     # print(route_command('member_users 1'))
     # print(route_command('member_rooms 7'))
     # print(route_command('add_user 1 7'))
-    print(route_command('del_user_from_room 1 7'))
-
+    # print(route_command('del_user_from_room 1 7'))
+    print(route_command('login 18 behura'))
     pass
