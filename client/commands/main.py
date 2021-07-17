@@ -95,15 +95,19 @@ class UpdateUser(Command):
         })
         return response.json()['message']
 
-class AllUsers(Command):
-
-    def execute(self):
-        pass
-
 
 class CreateRoom(Command):
+
+    path = '/auth/room/'
+
+    # cmd: create_room <room_name> <private>
     def execute(self):
-        pass
+        
+        response = requests.post(self.build_url(self.path),
+                                 data={'room_name': self.args[0],
+                                       'private': self.args[1] == 'true'})
+
+        return 'created room_id ' + str(response.json()['room_id'])
 
 
 class FetchRoom(Command):
@@ -163,6 +167,7 @@ def route_command(c):
         'get_user': FetchUser(),
         'del_user': DeleteUser(),
         'update_user': UpdateUser(),
+        'create_room': CreateRoom(),
     }
 
     lst = c.split(' ')
@@ -175,7 +180,9 @@ def route_command(c):
 
 
 if __name__ == '__main__':
-    print(route_command('create_user ronaq password'))
+    # print(route_command('create_user ronaq password'))
     # print(route_command('get_user raja'))
     # print(route_command('del_user 11'))
     # print(route_command('update_user 7 raja password'))
+
+    print(route_command('create_room birthday true'))
