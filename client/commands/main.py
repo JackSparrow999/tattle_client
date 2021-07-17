@@ -153,8 +153,22 @@ class DeleteRoom(Command):
 
 
 class UpdateRoom(Command):
+
+    path = '/auth/room/'
+
+    # cmd: update_room room_id room_name true
     def execute(self):
-        pass
+        if len(self.args) == 3:
+            room_id = self.args[0]
+            room_name = self.args[1]
+            private = self.args[2] == 'true'
+
+        response = requests.put(self.build_url(self.path), data={
+            'room_id': room_id,
+            'room_name': room_name,
+            'private': private
+        })
+        return response.json()['message']
 
 
 class AllRooms(Command):
@@ -202,6 +216,7 @@ def route_command(c):
         'create_room': CreateRoom(),
         'get_room': FetchRoom(),
         'del_room': DeleteRoom(),
+        'update_room': UpdateRoom(),
     }
 
     lst = c.split(' ')
@@ -220,7 +235,8 @@ if __name__ == '__main__':
     # print(route_command('update_user 7 raja password'))
 
     # print(route_command('create_room birthday true'))
-    # print(route_command('get_room birthday'))
+    # print(route_command('get_room piano'))
     # print(route_command('del_room 6'))
+    # print(route_command('update_room 8 piano true'))
 
     pass
