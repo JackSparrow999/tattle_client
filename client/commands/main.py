@@ -195,8 +195,19 @@ class AllUsersInRoom(Command):
 
 class AllRoomsForUser(Command):
 
+    path = '/auth/add_user/'
+
+    # cmd: member_users user_id
     def execute(self):
-        pass
+        response = requests.get(self.build_url(self.path), params={
+            'user_id': self.args[0]
+        })
+        res = ''
+        for x in response.json()['rooms']:
+            res = res + str(x)
+            res = res + '\n'
+
+        return res
 
 
 class RemoveUserFromRoom(Command):
@@ -224,6 +235,7 @@ def route_command(c):
         'del_room': DeleteRoom(),
         'update_room': UpdateRoom(),
         'member_users': AllUsersInRoom(),
+        'member_rooms': AllRoomsForUser(),
     }
 
     lst = c.split(' ')
@@ -246,7 +258,8 @@ if __name__ == '__main__':
     # print(route_command('del_room 6'))
     # print(route_command('update_room 8 piano true'))
 
-    print(route_command('member_users 1'))
+    # print(route_command('member_users 1'))
+    print(route_command('member_rooms 7'))
 
 
     pass
