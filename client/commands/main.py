@@ -171,11 +171,6 @@ class UpdateRoom(Command):
         return response.json()['message']
 
 
-class AllRooms(Command):
-    def execute(self):
-        pass
-
-
 class AddUserToRoom(Command):
     def execute(self):
         pass
