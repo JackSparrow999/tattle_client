@@ -102,7 +102,7 @@ class CreateRoom(Command):
 
     # cmd: create_room <room_name> <private>
     def execute(self):
-        
+
         response = requests.post(self.build_url(self.path),
                                  data={'room_name': self.args[0],
                                        'private': self.args[1] == 'true'})
@@ -111,8 +111,27 @@ class CreateRoom(Command):
 
 
 class FetchRoom(Command):
+
+    path = '/auth/room/'
+
+    # cmd: get_room <room_name>
     def execute(self):
-        pass
+        if len(self.args) >= 1:
+            room_name = self.args[0]
+        else:
+            room_name = None
+        if room_name == None:
+            response = requests.get(self.build_url(self.path))
+        else:
+            response = requests.get(self.build_url(self.path), params={
+                'room_name': room_name
+            })
+        lst = response.json()['rooms']
+        res = ''
+        for x in lst:
+            res = res + str(x)
+            res = res + '\n'
+        return res
 
 
 class DeleteRoom(Command):
@@ -168,6 +187,7 @@ def route_command(c):
         'del_user': DeleteUser(),
         'update_user': UpdateUser(),
         'create_room': CreateRoom(),
+        'get_room': FetchRoom(),
     }
 
     lst = c.split(' ')
@@ -185,4 +205,5 @@ if __name__ == '__main__':
     # print(route_command('del_user 11'))
     # print(route_command('update_user 7 raja password'))
 
-    print(route_command('create_room birthday true'))
+    # print(route_command('create_room birthday true'))
+    # print(route_command('get_room birthday'))
