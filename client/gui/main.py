@@ -36,18 +36,18 @@ class MainApp(App):
         chat_input.bind(on_text_validate=self.on_enter_in_chat)
         self.chat_box = chat_input
 
-        # cmd window
-        cmd_list = TextInput(text='All commands', multiline=True, readonly=True,
-                                size_hint=(.2, .35),
-                                background_color=(.8, .8, 1, 1),
-                                pos_hint={'x': .75, 'y': .6},
-                                cursor_color=(.8, .8, 1, 1))
+        # cmd input
+        cmd_in = TextInput(text='Enter command', multiline=False,
+                           size_hint=(.2, .35),
+                           background_color=(.8, .8, 1, 1),
+                           pos_hint={'x': .75, 'y': .6},
+                           cursor_color=(.8, .8, 1, 1))
 
-        #cmd window
-        cmd_window = TextInput(text='Enter command', multiline=False,
-                                size_hint=(.2, .2),
-                                background_color=(1, 1, 1, 1),
-                                pos_hint={'x': .75, 'y': .35})
+        # cmd output
+        cmd_out = TextInput(text='All commands', multiline=True, readonly=True,
+                                size_hint = (.2, .2),
+                                background_color = (1, 1, 1, 1),
+                                pos_hint = {'x': .75, 'y': .35})
 
         # send button
         execute_btn = Button(text="Execute",
@@ -59,8 +59,8 @@ class MainApp(App):
         global_window.add_widget(send_btn)
         global_window.add_widget(chat_view)
         global_window.add_widget(chat_input)
-        global_window.add_widget(cmd_window)
-        global_window.add_widget(cmd_list)
+        global_window.add_widget(cmd_in)
+        global_window.add_widget(cmd_out)
         global_window.add_widget(execute_btn)
 
         return global_window
