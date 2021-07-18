@@ -68,7 +68,8 @@ class MainApp(App):
         cmd_out = TextInput(text='Command output', multiline=True, readonly=True,
                                 size_hint = (.2, .2),
                                 background_color = (1, 1, 1, 1),
-                                pos_hint = {'x': .75, 'y': .35})
+                                pos_hint = {'x': .75, 'y': .35},
+                                cursor_color=(1, 1, 1, 1))
 
         self.cmd_output = cmd_out
 
@@ -86,10 +87,6 @@ class MainApp(App):
             halign = 'left',
             pos_hint={'x': 0.05, 'y': .9})
         self.info = info
-
-        # info = Label(text='xyz',
-        #             background_color=(1, 1, .8, 1),
-        #             )
 
         global_window.add_widget(send_btn)
         global_window.add_widget(chat_view)
