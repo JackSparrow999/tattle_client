@@ -6,12 +6,19 @@ from kivy.uix.button import Button
 
 from client.commands import main
 
+import requests
+
 class MainApp(App):
 
     latest_chats = None
     chat_box = None
     cmd_output = None
     cmd_input = None
+
+    user_id = None
+    user_name = None
+    room_id = None
+    room_name = None
 
     def build(self):
 
@@ -109,8 +116,31 @@ def message_handler(message):
 
 def execute_cmd(cmd):
     output = main.route_command(cmd)
-    print(output)
+    login_user(cmd, output)
     return output
+
+
+def login_user(cmd, out):
+    lst = cmd.split()
+    user = None
+    if lst[0] == 'login' and out == 'true':
+        user = get_user_from_user_id(lst[1])
+        app.user_id = user['user_id']
+        app.user_name = user['user_name']
+    print(user)
+
+
+def get_user_from_user_id(user_id):
+    cmd = main.Command()
+    response = requests.get(cmd.build_url('/auth/user/'), params={
+        'user_id': user_id
+    })
+    lst = response.json()['users']
+    user_name = ''
+    for x in lst:
+        user_name = x['user_name']
+    user = {'user_id': user_id, 'user_name': user_name}
+    return user
 
 
 if __name__ == '__main__':
