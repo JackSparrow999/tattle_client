@@ -299,6 +299,8 @@ if __name__ == '__main__':
     # print(route_command('member_rooms 7'))
     # print(route_command('add_user 1 7'))
     # print(route_command('del_user_from_room 1 7'))
-    print(route_command('login 2 behura'))
-    print(route_command('login 2 behra'))
+    # print(route_command('login 2 behura'))
+    # print(route_command('login 2 behra'))
+
+    #switch room_id
     pass
