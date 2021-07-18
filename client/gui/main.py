@@ -3,10 +3,15 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.textinput import TextInput
 from poc.redis_client import redis_obj
 from kivy.uix.button import Button
+from kivy.uix.label import Label
 
 from client.commands import main
 
 import requests
+
+class MyLabel(Label):
+   def on_size(self, *args):
+      self.text_size = self.size
 
 class MainApp(App):
 
@@ -33,7 +38,7 @@ class MainApp(App):
 
         #global chat view
         chat_view = TextInput(text='', multiline=True, readonly=True,
-                        size_hint=(.65, .75),
+                        size_hint=(.65, .65),
                         background_color=(1, 1, .8, 1),
                         pos_hint={'x': .05, 'y': .2},
                         cursor_color=(1, 1, .8, 1))
@@ -72,12 +77,24 @@ class MainApp(App):
                           pos_hint={'x': .75, 'y': .2})
         execute_btn.bind(on_press=self.execute_button_callback)
 
+        # info label
+        info = MyLabel(text ="user_id: user_name: room_name: ",
+            color =[0.41, 0.42, 0.74, 1],
+            font_size='20sp',
+            halign = 'left',
+            pos_hint={'x': 0.05, 'y': .9})
+
+        # info = Label(text='xyz',
+        #             background_color=(1, 1, .8, 1),
+        #             )
+
         global_window.add_widget(send_btn)
         global_window.add_widget(chat_view)
         global_window.add_widget(chat_input)
         global_window.add_widget(cmd_in)
         global_window.add_widget(cmd_out)
         global_window.add_widget(execute_btn)
+        global_window.add_widget(info)
 
         return global_window
 
