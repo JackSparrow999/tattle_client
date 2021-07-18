@@ -1,4 +1,5 @@
 client/chat/__pycache__*
 .idea*
 client/__pycache__*
+*__pycache__*
 poc/__pycache__/*
