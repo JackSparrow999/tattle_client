@@ -44,7 +44,7 @@ class MainApp(App):
                            cursor_color=(.8, .8, 1, 1))
 
         # cmd output
-        cmd_out = TextInput(text='All commands', multiline=True, readonly=True,
+        cmd_out = TextInput(text='Command output', multiline=True, readonly=True,
                                 size_hint = (.2, .2),
                                 background_color = (1, 1, 1, 1),
                                 pos_hint = {'x': .75, 'y': .35})
