@@ -165,4 +165,9 @@ if __name__ == '__main__':
     pub = redis_obj.pubsub()
     pub.subscribe(**{'chat_channel': message_handler})
     pub.run_in_thread(sleep_time=1)
-    app.run()
+    while True:
+
+        try:
+            app.run()
+        except:
+            continue
