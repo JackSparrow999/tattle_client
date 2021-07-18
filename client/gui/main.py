@@ -4,10 +4,14 @@ from kivy.uix.textinput import TextInput
 from poc.redis_client import redis_obj
 from kivy.uix.button import Button
 
+from client.commands import main
+
 class MainApp(App):
 
     latest_chats = None
     chat_box = None
+    cmd_output = None
+    cmd_input = None
 
     def build(self):
 
@@ -37,17 +41,22 @@ class MainApp(App):
         self.chat_box = chat_input
 
         # cmd input
-        cmd_in = TextInput(text='Enter command', multiline=False,
+        cmd_in = TextInput(text='Enter command', multiline=False, text_validate_unfocus=False,
                            size_hint=(.2, .35),
                            background_color=(.8, .8, 1, 1),
-                           pos_hint={'x': .75, 'y': .6},
-                           cursor_color=(.8, .8, 1, 1))
+                           pos_hint={'x': .75, 'y': .6})
+
+        cmd_in.bind(on_text_validate=self.on_enter_in_cmd_input)
+
+        self.cmd_input = cmd_in
 
         # cmd output
         cmd_out = TextInput(text='Command output', multiline=True, readonly=True,
                                 size_hint = (.2, .2),
                                 background_color = (1, 1, 1, 1),
                                 pos_hint = {'x': .75, 'y': .35})
+
+        self.cmd_output = cmd_out
 
         # send button
         execute_btn = Button(text="Execute",
@@ -74,8 +83,15 @@ class MainApp(App):
         publish(self.chat_box.text)
         self.chat_box.text = ''
 
+    def on_enter_in_cmd_input(instance, value):
+        output = execute_cmd(value.text)
+        value.text = ''
+        app.cmd_output.text = output
+
     def execute_button_callback(self, event):
-        print('execute')
+        output = execute_cmd(self.cmd_input.text)
+        self.cmd_input.text = ''
+        self.cmd_output.text = output
 
 
 app = MainApp()
@@ -90,6 +106,11 @@ def message_handler(message):
         app.latest_chats.text = app.latest_chats.text \
                                  + '\n' \
                                  + message["data"]
+
+def execute_cmd(cmd):
+    output = main.route_command(cmd)
+    print(output)
+    return output
 
 
 if __name__ == '__main__':

@@ -9,6 +9,7 @@ class Command:
     def init(self, s):
         lst = s.split()
         self.cmd = lst[0]
+        self.args = []
         for i in range(1, len(lst)):
             self.args.append(lst[i])
 
@@ -245,7 +246,12 @@ class LoginUser(Command):
             'password': password,
         })
 
-        return response.json()['logged_in'] == True
+        print(response.json()['logged_in'])
+
+        if response.json()['logged_in'] == True:
+            return 'true'
+        else:
+            return 'false'
 
 
 
@@ -271,6 +277,8 @@ def route_command(c):
     cmd = commands_dict[lst[0]]
     cmd.init(c)
 
+    print(c)
+
     return cmd.execute()
 
 
@@ -292,4 +300,5 @@ if __name__ == '__main__':
     # print(route_command('add_user 1 7'))
     # print(route_command('del_user_from_room 1 7'))
     print(route_command('login 2 behura'))
+    print(route_command('login 2 behra'))
     pass
