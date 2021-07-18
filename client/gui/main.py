@@ -135,8 +135,11 @@ def message_handler(message):
                                  + message["data"]
 
 def execute_cmd(cmd):
-    output = main.route_command(cmd)
-    login_user(cmd, output)
+    if switch_room(cmd) == False:
+        output = main.route_command(cmd)
+        login_user(cmd, output)
+    else:
+        output = 'switched to room ' + app.room_name
     app.info.text = "user_id: " + str(app.user_id) + "  user_name: " + str(app.user_name) + "  room_name: " + str(app.room_name)
     return output
 
@@ -148,6 +151,8 @@ def login_user(cmd, out):
         user = get_user_from_user_id(lst[1])
         app.user_id = user['user_id']
         app.user_name = user['user_name']
+        app.room_name = None
+        app.room_id = None
     print(user)
 
 
@@ -163,9 +168,47 @@ def get_user_from_user_id(user_id):
     user = {'user_id': user_id, 'user_name': user_name}
     return user
 
+#switch room_id
+def switch_room(cmd):
+    lst = cmd.split()
+    if len(lst) < 1:
+        return
+    room_id = int(lst[1])
+    if lst[0] == 'switch' and room_id != None:
+        if check_room_member(room_id, app.user_id):
+            room = get_room_from_room_id(room_id)
+            app.room_id = room['room_id']
+            app.room_name = room['room_name']
+
+        return True
+    return False
+
+
+def check_room_member(room_id, user_id):
+    cmd = main.Command()
+    response = requests.get(cmd.build_url('/auth/add_user/'), params={
+        'room_id': room_id,
+        'user_id': user_id
+    })
+
+    return response.json()["is_member"]
+
+
+def get_room_from_room_id(room_id):
+    cmd = main.Command()
+    response = requests.get(cmd.build_url('/auth/room/'), params={
+        'room_id': room_id
+    })
+    lst = response.json()['rooms']
+    room_name = ''
+    for x in lst:
+        room_name = x['room_name']
+    room = {'room_id': room_id, 'room_name': room_name}
+    return room
+
 
 if __name__ == '__main__':
-
+    print(get_room_from_room_id(1))
     pub = redis_obj.pubsub()
     pub.subscribe(**{'chat_channel': message_handler})
     pub.run_in_thread(sleep_time=1)
