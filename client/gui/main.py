@@ -25,6 +25,8 @@ class MainApp(App):
     room_id = None
     room_name = None
 
+    info = None
+
     def build(self):
 
         global_window = FloatLayout()
@@ -83,6 +85,7 @@ class MainApp(App):
             font_size='20sp',
             halign = 'left',
             pos_hint={'x': 0.05, 'y': .9})
+        self.info = info
 
         # info = Label(text='xyz',
         #             background_color=(1, 1, .8, 1),
@@ -134,6 +137,7 @@ def message_handler(message):
 def execute_cmd(cmd):
     output = main.route_command(cmd)
     login_user(cmd, output)
+    app.info.text = "user_id: " + str(app.user_id) + "  user_name: " + str(app.user_name) + "  room_name: " + str(app.room_name)
     return output
 
 
