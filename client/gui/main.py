@@ -120,8 +120,10 @@ class MainApp(App):
 
 app = MainApp()
 
+channel = 'chat_channel'
+
 def publish(chat):
-    redis_obj.publish('chat_channel', chat)
+    redis_obj.publish(channel, chat)
 
 def message_handler(message):
     if app.latest_chats.text == '':
@@ -179,7 +181,12 @@ def switch_room(cmd):
 
             app.latest_chats.text = ''
 
-            pub.subscribe(**{'chat_channel' + str(app.room_id): message_handler})
+            global channel
+
+            pub.unsubscribe(channel)
+            channel = str(app.room_id)
+            pub.subscribe(**{channel: message_handler})
+            pub.run_in_thread(sleep_time=1)
 
         return True
     return False
@@ -211,7 +218,7 @@ def get_room_from_room_id(room_id):
 if __name__ == '__main__':
     print(get_room_from_room_id(1))
     pub = redis_obj.pubsub()
-    pub.subscribe(**{'chat_channel': message_handler})
+    pub.subscribe(**{channel: message_handler})
     pub.run_in_thread(sleep_time=1)
     # while True:
     #
