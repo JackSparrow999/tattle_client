@@ -177,6 +177,10 @@ def switch_room(cmd):
             app.room_id = room['room_id']
             app.room_name = room['room_name']
 
+            app.latest_chats.text = ''
+
+            pub.subscribe(**{'chat_channel' + str(app.room_id): message_handler})
+
         return True
     return False
 
