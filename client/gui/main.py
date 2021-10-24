@@ -173,6 +173,8 @@ def get_user_from_user_id(user_id):
     return user
 
 #switch room_id
+# changes data to reflect if room is switched
+# Also unsubscribes from old channel and subscribes to the new redis channel
 def switch_room(cmd):
     lst = cmd.split()
     if len(lst) < 1:
@@ -196,7 +198,7 @@ def switch_room(cmd):
         return True
     return False
 
-
+# returns true if user is a member of the room
 def check_room_member(room_id, user_id):
     cmd = main.Command()
     response = requests.get(cmd.build_url('/auth/add_user/'), params={
@@ -206,7 +208,7 @@ def check_room_member(room_id, user_id):
 
     return response.json()["is_member"]
 
-
+# returns room data for given room_id
 def get_room_from_room_id(room_id):
     cmd = main.Command()
     response = requests.get(cmd.build_url('/auth/room/'), params={
