@@ -98,20 +98,23 @@ class MainApp(App):
 
         return global_window
 
-
+    #publishes data in value to redis on enter
     def on_enter_in_chat(instance, value):
         publish(value.text)
         value.text = ''
 
+    # publishes data in value to redis on send button click
     def send_button_callback(self, event):
         publish(self.chat_box.text)
         self.chat_box.text = ''
 
+    # executes command in input box on enter
     def on_enter_in_cmd_input(instance, value):
         output = execute_cmd(value.text)
         value.text = ''
         app.cmd_output.text = output
 
+    # executes command in input box on enter
     def execute_button_callback(self, event):
         output = execute_cmd(self.cmd_input.text)
         self.cmd_input.text = ''
