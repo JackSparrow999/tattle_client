@@ -127,8 +127,10 @@ def publish(chat):
 
 def message_handler(message):
     if app.latest_chats.text == '':
+        # no chats typed by user yet
         app.latest_chats.text = message["data"]
     else:
+        # appends latest chat from queue in a new line
         app.latest_chats.text = app.latest_chats.text \
                                  + '\n' \
                                  + message["data"]
