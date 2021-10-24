@@ -38,7 +38,7 @@ class MainApp(App):
                         pos_hint={'x': .75, 'y': .05})
         send_btn.bind(on_press = self.send_button_callback)
 
-        #global chat view
+        #global chat view that displays all the chats typed by everyone
         chat_view = TextInput(text='', multiline=True, readonly=True,
                         size_hint=(.65, .65),
                         background_color=(1, 1, .8, 1),
@@ -46,7 +46,7 @@ class MainApp(App):
                         cursor_color=(1, 1, .8, 1))
         self.latest_chats = chat_view
 
-        #chat input window
+        #chat input window where we type our chat
         chat_input = TextInput(text='Enter message', multiline=False, text_validate_unfocus=False,
                         size_hint=(.65, .1),
                         background_color=(0.753, 0.753, 0.753, 1),
@@ -80,7 +80,7 @@ class MainApp(App):
                           pos_hint={'x': .75, 'y': .2})
         execute_btn.bind(on_press=self.execute_button_callback)
 
-        # info label
+        # info label displays user_id, user_name, room_name
         info = MyLabel(text ="user_id: user_name: room_name: ",
             color =[0.41, 0.42, 0.74, 1],
             font_size='20sp',
