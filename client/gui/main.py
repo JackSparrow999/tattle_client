@@ -178,7 +178,9 @@ def get_user_from_user_id(user_id):
 def switch_room(cmd):
     lst = cmd.split()
     if len(lst) < 1:
-        return
+        return False
+    if(lst[0] != "switch"):
+        return False
     room_id = int(lst[1])
     if lst[0] == 'switch' and room_id != None:
         if check_room_member(room_id, app.user_id):
