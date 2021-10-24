@@ -139,12 +139,15 @@ def message_handler(message):
                                  + message["data"]
 
 def execute_cmd(cmd):
-    if switch_room(cmd) == False:
+    res = switch_room(cmd)
+    if type(res) == str:
+        output = res
+    elif res == False:
         output = main.route_command(cmd)
         login_user(cmd, output)
     else:
         output = 'switched to room ' + app.room_name
-    app.info.text = "user_id: " + str(app.user_id) + "  user_name: " + str(app.user_name) + "  room_name: " + str(app.room_name)
+        app.info.text = "user_id: " + str(app.user_id) + "  user_name: " + str(app.user_name) + "  room_name: " + str(app.room_name)
     return output
 
 
@@ -181,6 +184,8 @@ def switch_room(cmd):
         return False
     if(lst[0] != "switch"):
         return False
+    if(app.user_id == None):
+        return "ERROR: No user logged in!"
     room_id = int(lst[1])
     if lst[0] == 'switch' and room_id != None:
         if check_room_member(room_id, app.user_id):

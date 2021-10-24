@@ -101,12 +101,12 @@ class CreateRoom(Command):
 
     path = '/auth/room/'
 
-    # cmd: create_room <room_name> <private>
+    # cmd: create_room <room_name>
     def execute(self):
 
         response = requests.post(self.build_url(self.path),
                                  data={'room_name': self.args[0],
-                                       'private': self.args[1] == 'true'})
+                                       'private': True})
 
         return 'created room_id ' + str(response.json()['room_id'])
 
@@ -157,12 +157,12 @@ class UpdateRoom(Command):
 
     path = '/auth/room/'
 
-    # cmd: update_room room_id room_name true
+    # cmd: update_room room_id room_name
     def execute(self):
-        if len(self.args) == 3:
+        if len(self.args) == 2:
             room_id = self.args[0]
             room_name = self.args[1]
-            private = self.args[2] == 'true'
+            private = True
 
         response = requests.put(self.build_url(self.path), data={
             'room_id': room_id,
@@ -290,7 +290,7 @@ if __name__ == '__main__':
     # print(route_command('del_user 11'))
     # print(route_command('update_user 7 raja password'))
 
-    # print(route_command('create_room birthday true'))
+    # print(route_command('create_room birthday'))
     # print(route_command('get_room piano'))
     # print(route_command('del_room 6'))
     # print(route_command('update_room 8 piano true'))
