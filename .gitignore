@@ -1,5 +1,6 @@
 client/chat/__pycache__*
-.idea*
+.idea/*
 client/__pycache__*
 *__pycache__*
 poc/__pycache__/*
+.python-version
