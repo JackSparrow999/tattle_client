@@ -216,7 +216,7 @@ def get_room_from_room_id(room_id):
 
 
 if __name__ == '__main__':
-    print(get_room_from_room_id(1))
+    # print(get_room_from_room_id(1))
     pub = redis_obj.pubsub()
     pub.subscribe(**{channel: message_handler})
     pub.run_in_thread(sleep_time=1)
