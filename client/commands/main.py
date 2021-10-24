@@ -293,7 +293,7 @@ if __name__ == '__main__':
     # print(route_command('create_room birthday'))
     # print(route_command('get_room piano'))
     # print(route_command('del_room 6'))
-    # print(route_command('update_room 8 piano true'))
+    # print(route_command('update_room 8 piano'))
 
     # print(route_command('member_users 1'))
     # print(route_command('member_rooms 7'))
