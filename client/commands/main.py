@@ -4,7 +4,7 @@ class Command:
 
     cmd = None
     args = []
-    host = 'http://127.0.0.1:8060'
+    host = 'http://127.0.0.1:8061'
 
     def init(self, s):
         lst = s.split()
@@ -30,7 +30,7 @@ class CreateUser(Command):
     #cmd: create_user <user_name> <password>
     def execute(self):
         response = requests.post(self.build_url(self.path),
-                      data={'user_name': self.args[0],
+                      json={'user_name': self.args[0],
                             'password': self.args[1]})
         return 'created user_id ' + str(response.json()['user_id'])
 
@@ -71,7 +71,7 @@ class DeleteUser(Command):
         else:
             user_id = None
 
-        response = requests.delete(self.build_url(self.path), data={
+        response = requests.delete(self.build_url(self.path), json={
             'user_id': user_id
         })
         return response.json()['message']
@@ -89,7 +89,7 @@ class UpdateUser(Command):
             user_name = self.args[1]
             user_password = self.args[2]
 
-        response = requests.put(self.build_url(self.path), data={
+        response = requests.put(self.build_url(self.path), json={
             'user_id': user_id,
             'user_name': user_name,
             'user_password': user_password
@@ -105,7 +105,7 @@ class CreateRoom(Command):
     def execute(self):
 
         response = requests.post(self.build_url(self.path),
-                                 data={'room_name': self.args[0],
+                                 json={'room_name': self.args[0],
                                        'private': True})
 
         return 'created room_id ' + str(response.json()['room_id'])
@@ -147,7 +147,7 @@ class DeleteRoom(Command):
         else:
             room_id = None
 
-        response = requests.delete(self.build_url(self.path), data={
+        response = requests.delete(self.build_url(self.path), json={
             'room_id': room_id
         })
         return response.json()['message']
@@ -164,7 +164,7 @@ class UpdateRoom(Command):
             room_name = self.args[1]
             private = True
 
-        response = requests.put(self.build_url(self.path), data={
+        response = requests.put(self.build_url(self.path), json={
             'room_id': room_id,
             'room_name': room_name,
             'private': private
@@ -178,7 +178,7 @@ class AddUserToRoom(Command):
 
     #cmd: add_user room_id user_id
     def execute(self):
-        response = requests.post(self.build_url(self.path), data={
+        response = requests.post(self.build_url(self.path), json={
             'room_id': self.args[0],
             'user_id': self.args[1],
         })
@@ -225,7 +225,7 @@ class RemoveUserFromRoom(Command):
 
     # cmd: del_user_from_room room_id user_id
     def execute(self):
-        response = requests.delete(self.build_url(self.path), data={
+        response = requests.delete(self.build_url(self.path), json={
             'room_id': self.args[0],
             'user_id': self.args[1],
         })
@@ -241,7 +241,7 @@ class LoginUser(Command):
         user_id = self.args[0]
         password = self.args[1]
 
-        response = requests.post(self.build_url(self.path), data={
+        response = requests.post(self.build_url(self.path), json={
             'user_id': user_id,
             'password': password,
         })
