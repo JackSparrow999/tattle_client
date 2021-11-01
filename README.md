@@ -53,7 +53,7 @@ App Commands:
 
 Please let me know if you guys come across any bugs.
 
-This app works with the chat_server that is in tattle_server repo(Django).
+This app works with the chat_server that is in tattle_server_revamp repo(Java + Spring Boot).
 The SpringBoot version of this server is coming soon. Stay tuned!!!
 
 Point of entry of code: https://github.com/JackSparrow999/tattle_client/blob/master/client/gui/main.py#L233
