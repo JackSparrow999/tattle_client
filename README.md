@@ -13,13 +13,14 @@ Setup:
   
 1. Install python 3.8.0
 
-2. Install redis
-
-3. Install packages listed in requirements.txt
+2. Install packages listed in requirements.txt
 
 
 Main Script for app: tattle_client/client/gui/main.py
 
+Before starting the client app make sure to bring up the server stack (Checkout the simple step in readme: https://github.com/JackSparrow999/tattle_server_revamp)
+
+Execute command after moving to repo directory: python -m client.gui.main
 
 App Commands:
 
